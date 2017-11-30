@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{8AE949B6-A74D-24A9-EC93-04B111EB7E87}</ProjectGuid>
+    <ProjectGuid>{0F77FF5A-CBC1-4DCD-C288-B9DB8EEA534E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\AsteroidSpawn.cs" />
      <Compile Include="Assets\Scripts\BRP.cs" />
      <Compile Include="Assets\Scripts\EdgeDetection.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\PodArms.cs" />
      <Compile Include="Assets\Scripts\Poole.cs" />

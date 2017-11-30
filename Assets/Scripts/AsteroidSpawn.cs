@@ -21,19 +21,27 @@ public class AsteroidSpawn : MonoBehaviour {
 	public float yMin;
 	public float yMax;
 
+	[Header ("Number Of object")]
+	public float Number;
 
 
+	public List<GameObject> AsteroidList;
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+		if (asteroids == null) {
+			Debug.Log("Need to set GameObject on AsteroidSpawn");
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		// timer to spawn the next asteroid
 		theCountdown -= Time.deltaTime;
-		if (theCountdown <= 0) {
+//		if (theCountdown <= 0) {
+		while (Number >= 0){
 			SpawnAsteroids();
+			Number --;
 			theCountdown = waitingForNextSpawn;
 		}
 	}
@@ -46,7 +54,8 @@ public class AsteroidSpawn : MonoBehaviour {
 		GameObject asteroidPrefab = asteroids [Random.Range(0, asteroids.Length)];
 
 		// Create random asteroid at random position
-		Instantiate (asteroidPrefab, pos, transform.rotation);
+		GameObject asteroid = Instantiate (asteroidPrefab, pos, transform.rotation);
+		AsteroidList.Add(asteroid);
+		print (AsteroidList);
 	}
-
 }

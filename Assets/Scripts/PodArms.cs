@@ -3,44 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PodArms : MonoBehaviour {
+
+	// private variables
+	private float t;
 	private bool collected = false;
-	private Poole poole;
 	private BRP brp;
-	// define the timer
-	public float collectTime = 3;
+	private Poole poole;
 
 	// Use this for initialization
 	void Start () {
-		poole = GameObject.FindObjectOfType<Poole>();
+		//make the references
 		brp = GameObject.FindObjectOfType<BRP>();
-	}
+		poole = GameObject.FindObjectOfType<Poole>();
 
-	void OnTriggerEnter2D (Collider2D collider)
-	{
-
+		t = GameManager.gm.collectTime; //Restore the timer
 	}
 
 	void OnTriggerStay2D (Collider2D collider)
 	{
 		if (Input.GetKey (KeyCode.Z) && collider.CompareTag ("Target")) {
-			collectTime -= Time.deltaTime;
-			brp.gameObject.SetActive(true);
-			brp.actived = true;
-			brp.currentAmount += brp.speed * Time.deltaTime;
-			if (collectTime <= 0) {
-				collected = true;
-			} else {
-				brp.gameObject.SetActive(false);
-			}
+			if (!collected) 
+			{
+				t -= Time.deltaTime;
+				brp.gameObject.SetActive(true);
+				//Debug.Log("Collecting: " + t);
+
+				if (t <= 0) 
+				{
+					collected = true;
+					Destroy (poole.rg); // Destroy the rigidbody of poole.
+					poole.transform.parent = this.GetComponentInParent<SpacePod> ().transform;
+					//Debug.Log("Done!");
+				}
+			} 
+		} else if (Input.GetKeyUp(KeyCode.Z)) {
+			t = GameManager.gm.collectTime;
+			brp.ResetBar();
+			//Debug.Log("t: " + t + ", original collect time: " + GameManager.gm.collectTime);
 		}
 	}
-	// Update is called once per frame
-	void Update ()
+
+	void OnTriggerExit2D (Collider2D collider)
 	{
-		if (collected) {
-			Destroy (poole.rg); // Destroy the rigidbody of poole.
-			poole.transform.parent = this.GetComponentInParent<SpacePod> ().transform;
-			collected = true;
-		}
+		brp.ResetBar();
 	}
+
+
 }

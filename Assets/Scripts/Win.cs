@@ -10,5 +10,6 @@ public class Win : MonoBehaviour {
 		if (collider.CompareTag ("Target")) {
 			levelManager.LoadLevel("WinScene");
 		}
+
 	}
 }

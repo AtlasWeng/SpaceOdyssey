@@ -10,9 +10,11 @@ public class Asteroid : MonoBehaviour {
 	public float rotateSpeedMin;
 	public float rotateSpeedMax;
 
+
 	// the reference to the component or other scipt
 	private LevelManager levelManager;
 	private Rigidbody2D rg;
+	private bool asteroidStart = false;
 
 	// private parameter
 	private float speed;
@@ -34,7 +36,7 @@ public class Asteroid : MonoBehaviour {
 		list.Add(1);
 		xDirection = list [Random.Range(0, 2)];
 		yDirection = list [Random.Range(0, 2)];
-		Debug.Log(xDirection + "," + yDirection);
+//		Debug.Log(xDirection + "," + yDirection);
 
 	}
 
@@ -53,23 +55,29 @@ public class Asteroid : MonoBehaviour {
 //		* Time.deltaTime
 //		* speed;
 
-		if (gameObject.transform.position.x >= 8) {
-			gameObject.transform.position = new Vector3 (-8, gameObject.transform.position.y, 0);
-		} else if (gameObject.transform.position.x <= -8) {
-			gameObject.transform.position = new Vector3 (8, gameObject.transform.position.y, 0);
-		} else if (gameObject.transform.position.y >= 6) {
-			gameObject.transform.position = new Vector3 (gameObject.transform.position.x, -6, 0);
-		} else if (gameObject.transform.position.y <= -6) {
-			gameObject.transform.position = new Vector3 (gameObject.transform.position.x, 6, 0);
-		}
+//		if (gameObject.transform.position.x >= 8) {
+//			gameObject.transform.position = new Vector3 (-8, gameObject.transform.position.y, 0);
+//		} else if (gameObject.transform.position.x <= -8) {
+//			gameObject.transform.position = new Vector3 (8, gameObject.transform.position.y, 0);
+//		} else if (gameObject.transform.position.y >= 6) {
+//			gameObject.transform.position = new Vector3 (gameObject.transform.position.x, -6, 0);
+//		} else if (gameObject.transform.position.y <= -6) {
+//			gameObject.transform.position = new Vector3 (gameObject.transform.position.x, 6, 0);
+//		}
 	}
 
 
 	// rotate the asteroids
 	void FixedUpdate ()
 	{
-		rg.AddForce(new Vector2(xDirection, yDirection) * speed);
-		rg.MoveRotation(rg.rotation + rotateSpeed * Time.fixedDeltaTime);
+		if (!asteroidStart && GameManager.gm.gameStartCounting < 0)
+		{
+				rg.velocity = new Vector2 (xDirection, yDirection) * speed;
+				asteroidStart = true;
+		} 
+
+		// Let Asteroid Rotate
+		rg.MoveRotation (rg.rotation + rotateSpeed * Time.fixedDeltaTime); 
 	}
 
 }
