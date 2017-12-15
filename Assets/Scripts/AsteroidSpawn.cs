@@ -5,6 +5,7 @@ using UnityEngine;
 public class AsteroidSpawn : MonoBehaviour {
 	// Array of object to spawn
 	public GameObject[] asteroids;
+	public GameObject otherObject;
 
 	// Time it takes to spawn asteroids
 	[Space(3)]
@@ -22,40 +23,71 @@ public class AsteroidSpawn : MonoBehaviour {
 	public float yMax;
 
 	[Header ("Number Of object")]
-	public float Number;
+	public int asteroidNumber = 8;
+	public int objectNumber = 0;
 
-
+	// list
+	[Header ("List")]
 	public List<GameObject> AsteroidList;
-	// Use this for initialization
-	void Start ()
-	{
-		if (asteroids == null) {
-			Debug.Log("Need to set GameObject on AsteroidSpawn");
-		}
+	public List<GameObject> ObjectList;
+
+	void Awake(){
+		SetupDefaults();
+	}
+
+	void Start(){
+		SpawnAsteroids();
+		SpawnObject();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
+		// use a parameter 'cd' to instantiate object one by one
 		// timer to spawn the next asteroid
-		theCountdown -= Time.deltaTime;
-//		if (theCountdown <= 0) {
-		while (Number >= 0){
-			SpawnAsteroids();
-			Number --;
-			theCountdown = waitingForNextSpawn;
+		// theCountdown -= Time.deltaTime;
+		// if (theCountdown <= 0) {
+
+		// create the object
+	}
+
+	void SpawnAsteroids ()
+	{
+		
+
+		// Create random asteroid at random position
+		while (asteroidNumber > 0){
+			// Defines the min and max ranges for x and y
+			Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), 0);
+
+			// Choose a new asteroid to spawn from the array
+			GameObject asteroidPrefab = asteroids [Random.Range (0, asteroids.Length)];
+
+			GameObject asteroid = Instantiate (asteroidPrefab, pos, transform.rotation);
+			AsteroidList.Add(asteroid);
+			asteroidNumber --;
 		}
 	}
 
-	void SpawnAsteroids() {
-		// Defines the min and max ranges for x and y
-		Vector3 pos = new Vector3 (Random.Range(xMin,xMax), Random.Range(yMin,yMax), 0);
+	void SpawnObject ()
+	{
+		while (objectNumber > 0) {
+			Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), 0);
+			GameObject ast = Instantiate (otherObject, pos, transform.rotation);
+			ObjectList.Add(ast);
+			objectNumber--;
+		}
+	}
 
-		// Choose a new asteroid to spawn from the array
-		GameObject asteroidPrefab = asteroids [Random.Range(0, asteroids.Length)];
+	void SetupDefaults ()
+	{
+		// check the instance
+		if (asteroids == null) {
+			Debug.LogError ("Need to set ASTEROIDS on AsteroidSpawn");
+		}
 
-		// Create random asteroid at random position
-		GameObject asteroid = Instantiate (asteroidPrefab, pos, transform.rotation);
-		AsteroidList.Add(asteroid);
-		print (AsteroidList);
+		if (otherObject == null) {
+			Debug.LogError ("Need to set OTHER OBJECT on AsteroidSpawn");
+		}
 	}
 }

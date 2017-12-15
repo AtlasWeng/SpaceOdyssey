@@ -19,6 +19,7 @@ public class BRP : MonoBehaviour {
 	void Start () {
 		gameObject.SetActive(false);
 		speed = GameManager.gm.collectTime;
+
 	}
 	
 	// Update is called once per frame

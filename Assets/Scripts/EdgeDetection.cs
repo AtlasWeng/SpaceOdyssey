@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EdgeDetection : MonoBehaviour {
-	private LevelManager levelManager;
 
 	// Use this for initialization
 	void Start(){
-		levelManager = GameObject.FindObjectOfType<LevelManager>();
 	}
 
-	void OnTriggerEnter2D (Collider2D collider)
+	void OnCollisionEnter2D (Collision2D collision)
 	{
-		if (collider.CompareTag ("Player")) {
-			Debug.Log ("Player Crash Edge");
-			levelManager.LoadLevel ("GameOverScene");
-		} else if (collider.CompareTag ("Target")) {
-			Debug.Log ("Poole fly away");
-			levelManager.LoadLevel("GameOverScene");
+		Vector2 tweak = new Vector2 (Random.Range (.1f, .5f), Random.Range (.1f, .5f));
+		if (GameManager.gm.gameStart) {
+			collision.gameObject.GetComponent<Rigidbody2D> ().velocity += tweak;
 		}
-	}
+
+		if (collision.gameObject.tag == "Player") {
+			GameManager.gm.gameTime -= 5;
+		}
+
+	} 
 }
